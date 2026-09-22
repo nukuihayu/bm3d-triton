@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bm3d-triton"
+version = "0.1.0"
+description = "GPU BM3D image denoising with PyTorch and Triton, without a compiled CUDA extension"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "BSD-2-Clause"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{name = "BM3D Triton contributors"}]
+keywords = ["bm3d", "triton", "pytorch", "denoising", "image-processing", "cuda"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+dependencies = ["torch>=2.6"]
+
+[project.optional-dependencies]
+cuda = ["triton>=3.2; sys_platform == 'linux'", "triton-windows>=3.2; sys_platform == 'win32'"]
+cli = ["Pillow>=10", "numpy>=1.24"]
+test = ["pytest>=8", "Pillow>=10", "numpy>=1.24"]
+eval = ["scikit-image>=0.24", "Pillow>=10", "numpy>=1.24"]
+figures = ["matplotlib>=3.8", "Pillow>=10", "numpy>=1.24"]
+dev = ["pytest>=8", "Pillow>=10", "numpy>=1.24", "ruff>=0.11", "build>=1.2", "twine>=6"]
+
+[project.scripts]
+bm3d-triton = "bm3d_triton.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bm3d_triton = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = ["cuda: executes real CUDA/Triton kernels"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E501"]

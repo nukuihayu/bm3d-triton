@@ -1,0 +1,9 @@
+include README.md README.zh-CN.md CONTRIBUTING.md SECURITY.md
+include LICENSE NOTICE
+include .gitignore .gitattributes .editorconfig
+recursive-include .github *.yml
+recursive-include tools *.py
+recursive-include tests *.py
+recursive-include benchmarks *.py
+recursive-include assets *.md *.svg *.png *.pdf
+global-exclude *.pyc *.so *.pyd

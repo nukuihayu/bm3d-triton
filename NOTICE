@@ -1,0 +1,21 @@
+BM3D Triton
+
+This project packages a BM3D Triton implementation originally developed in
+GZY_LYT. The implementation follows the pipeline of David Honzátko's bm3d-gpu:
+https://github.com/DawyD/bm3d-gpu
+
+The original copyright and BSD-2-Clause terms are retained in LICENSE.
+No legacy CUDA extension is distributed.
+
+BM3D was introduced by K. Dabov, A. Foi, V. Katkovnik and K. Egiazarian,
+"Image Denoising by Sparse 3-D Transform-Domain Collaborative Filtering,"
+IEEE Transactions on Image Processing, 16(8), 2080-2095, 2007.
+DOI: 10.1109/TIP.2007.901238
+
+This is an independent implementation, not the official BM3D reference package.
+PyTorch, Triton, NVIDIA and other names identify their respective projects;
+no endorsement or affiliation is implied.
+
+Documentation image provenance and NASA photograph attribution are provided in
+assets/README.md. The source photograph is public domain; repository-authored
+layouts and SVG illustrations use the project's BSD-2-Clause license.
