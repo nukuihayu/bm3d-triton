@@ -1,4 +1,4 @@
-name: CPU tests and package
+name: Test, build and release
 on:
   push:
   pull_request:
@@ -21,11 +21,15 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
           python -m pip install -e ".[dev]"
+      - name: Check package and tag versions
+        env:
+          RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+        run: python tools/check_release.py --tag "$RELEASE_TAG"
       - run: ruff check .
       - run: ruff format --check .
       - run: pytest -m "not cuda"
       - run: python -m build
-      - run: python -m twine check dist/*
+      - run: python -m twine check --strict dist/*
       - name: Smoke test installed wheel outside checkout
         run: |
           python -m venv --system-site-packages "$RUNNER_TEMP/bm3d-wheel"
@@ -37,3 +41,24 @@ jobs:
         with:
           name: distributions-py${{ matrix.python }}
           path: dist/*
+          if-no-files-found: error
+  release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: cpu
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions-py3.12
+          path: dist
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" dist/* --verify-tag --generate-notes --title "bm3d-triton $RELEASE_TAG"

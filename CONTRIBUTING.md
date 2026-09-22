@@ -52,7 +52,7 @@ matches. Investigate discrepancies rather than widening tolerances without
 analysis. A skipped GPU test is not GPU validation. Benchmark methods are in
 [README.md](README.md#run-your-own-benchmarks); define acceptance criteria in advance.
 
-## Release checks
+## Releases
 
 Keep versions in `pyproject.toml` and `src/bm3d_triton/__init__.py` synchronized.
 Run CPU/GPU tests, lint and representative quality checks. Build with
@@ -60,9 +60,23 @@ Run CPU/GPU tests, lint and representative quality checks. Build with
 installed wheel outside the checkout and inspect archives for retained licenses,
 documented image provenance, and absence of private paths or benchmark outputs.
 
-Before public hosting, configure real project URLs, maintainer contacts and
-private vulnerability reporting. Publish only owner-approved artifacts and
-release notes. The workflows build/test artifacts; they do not publish to PyPI.
+Push an annotated tag matching the package version to publish a GitHub Release:
+
+```bash
+git tag -a v0.1.0 -m "Release v0.1.0"
+git push origin v0.1.0
+```
+
+Replace `0.1.0` with the new version. GitHub Actions checks version consistency,
+runs CPU tests on Python 3.10, 3.12 and 3.13, and builds and smoke-tests packages.
+After all checks pass, it creates a Release with generated notes and attaches
+the tested Python 3.12 job's wheel and sdist. Publication uses `GITHUB_TOKEN`
+with `contents: write`; no additional secret is required. Do not create the
+same Release manually before the workflow runs. Packages are not uploaded to PyPI.
+
+GPU tests remain a separate manual workflow requiring a self-hosted NVIDIA runner.
+Run them before tagging kernel changes. The wheel contains Python/Triton source;
+GPU kernels are JIT-compiled on first use.
 
 ## Community conduct
 

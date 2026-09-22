@@ -1,6 +1,6 @@
 include README.md README.zh-CN.md CONTRIBUTING.md SECURITY.md
 include LICENSE NOTICE
-include .gitignore .gitattributes .editorconfig
+include .gitignore .gitattributes
 recursive-include .github *.yml
 recursive-include tools *.py
 recursive-include tests *.py

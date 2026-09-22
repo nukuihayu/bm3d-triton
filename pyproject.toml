@@ -25,10 +25,10 @@ dependencies = ["torch>=2.6"]
 [project.optional-dependencies]
 cuda = ["triton>=3.2; sys_platform == 'linux'", "triton-windows>=3.2; sys_platform == 'win32'"]
 cli = ["Pillow>=10", "numpy>=1.24"]
-test = ["pytest>=8", "Pillow>=10", "numpy>=1.24"]
+test = ["pytest>=8", "Pillow>=10", "numpy>=1.24", "tomli>=2; python_version < '3.11'"]
 eval = ["scikit-image>=0.24", "Pillow>=10", "numpy>=1.24"]
 figures = ["matplotlib>=3.8", "Pillow>=10", "numpy>=1.24"]
-dev = ["pytest>=8", "Pillow>=10", "numpy>=1.24", "ruff>=0.11", "build>=1.2", "twine>=6"]
+dev = ["pytest>=8", "Pillow>=10", "numpy>=1.24", "ruff>=0.11", "build>=1.2", "twine>=6", "tomli>=2; python_version < '3.11'"]
 
 [project.scripts]
 bm3d-triton = "bm3d_triton.cli:main"
